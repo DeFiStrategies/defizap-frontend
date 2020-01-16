@@ -1,0 +1,241 @@
+function ethCurrentPrice() {
+  var res = UrlFetchApp.fetch("https://api.etherscan.io/api?module=stats&action=ethprice&apikey=9PFG6U3B5UWDIEMYKP6B91EHZ7KB1A9YPD");
+  var content = res.getContentText();
+  var json = JSON.parse(content);
+  var ethusd = json["result"]["ethusd"];
+  Logger.log(ethusd);
+
+  return ethusd;
+  
+}
+
+function ethWalletBalance(addresses) {
+  var url = "https://api.etherscan.io/api?module=account&action=balancemulti&address=" + addresses + "&tag=latest&apikey=9PFG6U3B5UWDIEMYKP6B91EHZ7KB1A9YPD";
+  var eth_response = UrlFetchApp.fetch(url);
+  var eth_balance = 0;
+  var eth_results = JSON.parse(eth_response.getContentText()); 
+  
+  for (var i = 0; i < eth_results.result.length; i++) {
+      var eth_bal = eth_results.result[i].balance;
+      eth_balance = eth_balance + eth_bal;
+  }
+  eth_balance = eth_balance / 1000000000000000000;
+  return eth_balance;
+}
+
+function tokenWalletBalance(contract, address) {
+  var tokenApiKey = "9PFG6U3B5UWDIEMYKP6B91EHZ7KB1A9YPD";   //REPLACE WITH YOUR ETHERSCAN API KEY!!
+  var url = "https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=" + contract + "&address=" + address + "&tag=latest&apikey=" + tokenApiKey;
+  var token_response = UrlFetchApp.fetch(url);
+  var token_results = JSON.parse(token_response.getContentText()); 
+  var token_balance = token_results.result / 1000000000000000000;
+  return token_balance;
+}
+
+
+function TokenSetsStats() {
+  
+  var res = UrlFetchApp.fetch("https://api.tokensets.com/public/v1/rebalancing_sets");
+  var content = res.getContentText();
+  
+  var json = JSON.parse(content);
+  var eth12emacoprice = json["rebalancing_sets"][0]["price_usd"];
+  var eth26emacoprice = json["rebalancing_sets"][1]["price_usd"];
+  var eth20smaco = json["rebalancing_sets"][2]["price_usd"];
+  var eth50smaco = json["rebalancing_sets"][3]["price_usd"];
+  var ethminvol = json["rebalancing_sets"][4]["price_usd"];
+  var ethlovol = json["rebalancing_sets"][6]["price_usd"];
+  var ethhivol = json["rebalancing_sets"][8]["price_usd"];
+  
+  var eth12emacomarket = json["rebalancing_sets"][0]["market_cap"];
+  var eth26emacomarket = json["rebalancing_sets"][1]["market_cap"];
+  var eth20smacomarket = json["rebalancing_sets"][2]["market_cap"];
+  var eth50smacomarket = json["rebalancing_sets"][3]["market_cap"];
+  var ethminvolmarket = json["rebalancing_sets"][4]["market_cap"];
+  var ethlovolmarket = json["rebalancing_sets"][6]["market_cap"];
+  var ethhivolmarket = json["rebalancing_sets"][8]["market_cap"];
+  
+  var eth12emacostatus = json["rebalancing_sets"][0]["status"];
+  var eth26emacostatus = json["rebalancing_sets"][1]["status"];
+  var eth20smacostatus = json["rebalancing_sets"][2]["status"];
+  var eth50smacostatus = json["rebalancing_sets"][3]["status"];
+  var ethminvolstatus = json["rebalancing_sets"][4]["status"];
+  var ethlovolstatus = json["rebalancing_sets"][6]["status"];
+  var ethhivolstatus = json["rebalancing_sets"][8]["status"];
+  
+  var eth12emacoqt = json["rebalancing_sets"][0]["unit_shares"];
+  var eth26emacoqt = json["rebalancing_sets"][1]["unit_shares"];
+  var eth20smacoqt = json["rebalancing_sets"][2]["unit_shares"];
+  var eth50smacoqt = json["rebalancing_sets"][3]["unit_shares"];
+  var ethminvolqt = json["rebalancing_sets"][4]["unit_shares"];
+  var ethlovolqt = json["rebalancing_sets"][6]["unit_shares"];
+  var ethhivolqt = json["rebalancing_sets"][8]["unit_shares"];
+  
+  var eth12emacorb = json["rebalancing_sets"][0]["last_rebalanced_at"];
+  var eth26emacorb = json["rebalancing_sets"][1]["last_rebalanced_at"];
+  var eth20smacorb = json["rebalancing_sets"][2]["last_rebalanced_at"];
+  var eth50smacorb = json["rebalancing_sets"][3]["last_rebalanced_at"];
+  var ethminvolrb = json["rebalancing_sets"][4]["last_rebalanced_at"];
+  var ethlovolrb = json["rebalancing_sets"][6]["last_rebalanced_at"];
+  var ethhivolrb = json["rebalancing_sets"][8]["last_rebalanced_at"];
+  
+  var eth12emacorq = json["rebalancing_sets"][0]["rebalance_criteria"]["price"][0]["requirement"];
+  var eth26emacorq = json["rebalancing_sets"][1]["rebalance_criteria"]["price"][0]["requirement"];
+  var eth20smacorq = json["rebalancing_sets"][2]["rebalance_criteria"]["price"][0]["requirement"];
+  var eth50smacorq = json["rebalancing_sets"][3]["rebalance_criteria"]["price"][0]["requirement"];
+  var ethminvolrq = json["rebalancing_sets"][4]["rebalance_criteria"]["price"][0]["requirement"];
+  var ethlovolrq = json["rebalancing_sets"][6]["rebalance_criteria"]["price"][0]["requirement"];
+  var ethhivolrq = json["rebalancing_sets"][8]["rebalance_criteria"]["price"][0]["requirement"];
+  
+  var ethminvolrq2 = json["rebalancing_sets"][4]["rebalance_criteria"]["price"][1]["requirement"];
+  var ethlovolrq2 = json["rebalancing_sets"][6]["rebalance_criteria"]["price"][1]["requirement"];
+  var ethhivolrq2 = json["rebalancing_sets"][8]["rebalance_criteria"]["price"][1]["requirement"];
+  
+  
+  var eth12emacousd = json["rebalancing_sets"][0]["components"][0]["quantity"];
+  var eth26emacousd = json["rebalancing_sets"][1]["components"][0]["quantity"];
+  var eth20smacousd = json["rebalancing_sets"][2]["components"][0]["quantity"];
+  var eth50smacousd = json["rebalancing_sets"][3]["components"][0]["quantity"];
+  var ethminvolusd = json["rebalancing_sets"][4]["components"][0]["quantity"];
+  var ethlovolusd = json["rebalancing_sets"][6]["components"][0]["quantity"];
+  var ethhivolusd = json["rebalancing_sets"][8]["components"][0]["quantity"];
+
+ 
+
+  
+  
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Dashboard");
+  sheet.getRange(7,4).setValue([eth12emacoprice]);
+  sheet.getRange(8,4).setValue([eth26emacoprice]);
+  sheet.getRange(9,4).setValue([eth20smaco]);
+  sheet.getRange(10,4).setValue([eth50smaco]);
+  sheet.getRange(11,4).setValue([ethminvol]);
+  sheet.getRange(12,4).setValue([ethlovol]);
+  sheet.getRange(13,4).setValue([ethhivol]);
+  
+  sheet.getRange(7,33).setValue([eth12emacomarket]);
+  sheet.getRange(8,33).setValue([eth26emacomarket]);
+  sheet.getRange(9,33).setValue([eth20smacomarket]);
+  sheet.getRange(10,33).setValue([eth50smacomarket]);
+  sheet.getRange(11,33).setValue([ethminvolmarket]);
+  sheet.getRange(12,33).setValue([ethlovolmarket]);
+  sheet.getRange(13,33).setValue([ethhivolmarket]);
+  
+  sheet.getRange(7,3).setValue([eth12emacostatus]);
+  sheet.getRange(8,3).setValue([eth26emacostatus]);
+  sheet.getRange(9,3).setValue([eth20smacostatus]);
+  sheet.getRange(10,3).setValue([eth50smacostatus]);
+  sheet.getRange(11,3).setValue([ethminvolstatus]);
+  sheet.getRange(12,3).setValue([ethlovolstatus]);
+  sheet.getRange(13,3).setValue([ethhivolstatus]);
+  
+  sheet.getRange(7,31).setValue([eth12emacoqt/1000000]);
+  sheet.getRange(8,31).setValue([eth26emacoqt/1000000]);
+  sheet.getRange(9,31).setValue([eth20smacoqt/1000000]);
+  sheet.getRange(10,31).setValue([eth50smacoqt/1000000]);
+  sheet.getRange(11,31).setValue([ethminvolqt/1000000]);
+  sheet.getRange(12,31).setValue([ethlovolqt/1000000]);
+  sheet.getRange(13,31).setValue([ethhivolqt/1000000]);
+  
+  sheet.getRange(7,38).setValue([eth12emacorb]);
+  sheet.getRange(8,38).setValue([eth26emacorb]);
+  sheet.getRange(9,38).setValue([eth20smacorb]);
+  sheet.getRange(10,38).setValue([eth50smacorb]);
+  sheet.getRange(11,38).setValue([ethminvolrb]);
+  sheet.getRange(12,38).setValue([ethlovolrb]);
+  sheet.getRange(13,38).setValue([ethhivolrb]);
+  
+  sheet.getRange(7,36).setValue([eth12emacorq]);
+  sheet.getRange(8,36).setValue([eth26emacorq]);
+  sheet.getRange(9,36).setValue([eth20smacorq]);
+  sheet.getRange(10,36).setValue([eth50smacorq]);
+  sheet.getRange(11,36).setValue([ethminvolrq]);
+  sheet.getRange(12,36).setValue([ethlovolrq]);
+  sheet.getRange(13,36).setValue([ethhivolrq]);
+  
+  sheet.getRange(11,37).setValue([ethminvolrq2]);
+  sheet.getRange(12,37).setValue([ethlovolrq2]);
+  sheet.getRange(13,37).setValue([ethhivolrq2]);
+  
+  sheet.getRange(7,32).setValue([eth12emacousd]);
+  sheet.getRange(8,32).setValue([eth26emacousd]);
+  sheet.getRange(9,32).setValue([eth20smacousd]);
+  sheet.getRange(10,32).setValue([eth50smacousd]);
+  sheet.getRange(11,32).setValue([ethminvolusd]);
+  sheet.getRange(12,32).setValue([ethlovolusd]);
+  sheet.getRange(13,32).setValue([ethhivolusd]);
+ 
+  
+  
+}
+
+function DeFiRates() {
+  
+  var res = UrlFetchApp.fetch("https://api.loanlist.io/overview");
+  var content = res.getContentText();
+  
+  var json = JSON.parse(content);
+  
+  var cDaiLendCurrent = json["dai"]["compound"]["lend"]["current"];
+  var cDaiBorrowCurrent = json["dai"]["compound"]["borrow"]["current"];
+  var cDaiBorrow30DA = json["dai"]["compound"]["borrow"]["month"];
+  var cDaiLend30DA = json["dai"]["compound"]["lend"]["month"];
+  
+  var cUSDCLendCurrent = json["usdc"]["compound"]["lend"]["current"];
+  var cUSDCBorrowCurrent = json["usdc"]["compound"]["borrow"]["current"];
+  var cUSDCBorrow30DA = json["usdc"]["compound"]["borrow"]["month"];
+  var cUSDCLend30DA = json["usdc"]["compound"]["lend"]["month"];
+  
+  var dDaiLendCurrent = json["dai"]["dydx"]["lend"]["current"];
+  var dDaiBorrowCurrent = json["dai"]["dydx"]["borrow"]["current"];
+  var dDaiBorrow30DA = json["dai"]["dydx"]["borrow"]["month"];
+  var dDaiLend30DA = json["dai"]["dydx"]["lend"]["month"];
+  
+  var dUSDCLendCurrent = json["usdc"]["dydx"]["lend"]["current"];
+  var dUSDCBorrowCurrent = json["usdc"]["dydx"]["borrow"]["current"];
+  var dUSDCBorrow30DA = json["usdc"]["dydx"]["borrow"]["month"];
+  var dUSDCLend30DA = json["usdc"]["dydx"]["lend"]["month"];
+  
+  var fDaiLendCurrent = json["dai"]["fulcrum"]["lend"]["current"];
+  var fDaiBorrowCurrent = json["dai"]["fulcrum"]["borrow"]["current"];
+  var fDaiBorrow30DA = json["dai"]["fulcrum"]["borrow"]["month"];
+  var fDaiLend30DA = json["dai"]["fulcrum"]["lend"]["month"];
+  
+  var fUSDCLendCurrent = json["usdc"]["fulcrum"]["lend"]["current"];
+  var fUSDCBorrowCurrent = json["usdc"]["fulcrum"]["borrow"]["current"];
+  var fUSDCBorrow30DA = json["usdc"]["fulcrum"]["borrow"]["month"];
+  var fUSDCLend30DA = json["usdc"]["fulcrum"]["lend"]["month"];
+  
+  
+  
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Dashboard");
+  sheet.getRange(4,13).setValue([cDaiLendCurrent]);
+  sheet.getRange(4,14).setValue([cDaiBorrowCurrent]);
+  sheet.getRange(4,15).setValue([cDaiLend30DA]);
+  sheet.getRange(4,16).setValue([cDaiBorrow30DA]);
+  sheet.getRange(4,17).setValue([cUSDCLendCurrent]);
+  sheet.getRange(4,18).setValue([cUSDCBorrowCurrent]);
+  sheet.getRange(4,19).setValue([cUSDCLend30DA]);
+  sheet.getRange(4,20).setValue([cUSDCBorrow30DA]);
+  
+  sheet.getRange(5,13).setValue([dDaiLendCurrent]);
+  sheet.getRange(5,14).setValue([dDaiBorrowCurrent]);
+  sheet.getRange(5,15).setValue([dDaiLend30DA]);
+  sheet.getRange(5,16).setValue([dDaiBorrow30DA]);
+  sheet.getRange(5,17).setValue([dUSDCLendCurrent]);
+  sheet.getRange(5,18).setValue([dUSDCBorrowCurrent]);
+  sheet.getRange(5,19).setValue([dUSDCLend30DA]);
+  sheet.getRange(5,20).setValue([dUSDCBorrow30DA]);
+  
+  sheet.getRange(6,13).setValue([fDaiLendCurrent]);
+  sheet.getRange(6,14).setValue([fDaiBorrowCurrent]);
+  sheet.getRange(6,15).setValue([fDaiLend30DA]);
+  sheet.getRange(6,16).setValue([fDaiBorrow30DA]);
+  sheet.getRange(6,17).setValue([fUSDCLendCurrent]);
+  sheet.getRange(6,18).setValue([fUSDCBorrowCurrent]);
+  sheet.getRange(6,19).setValue([fUSDCLend30DA]);
+  sheet.getRange(6,20).setValue([fUSDCBorrow30DA]);
+  
+}
+
+

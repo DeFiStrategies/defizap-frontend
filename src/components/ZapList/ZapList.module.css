@@ -1,0 +1,12 @@
+.zapName {
+  justify-content: left;
+  margin-left: 3%    
+}
+
+.beforePill {
+    margin-left: 0;
+  }
+  
+.afterPill{
+  margin: 5px;
+}

@@ -1,0 +1,147 @@
+h1 {
+  font-size: 48px !important;
+}
+
+body {
+  background-color: #f9fbfd;
+}
+
+.card {
+  margin-bottom: 1.5rem;
+  border-color: #edf2f9;
+  box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+}
+
+.font30 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.font20 {
+  font-size: 20px;
+}
+
+.font16 {
+  font-size: 16px;
+}
+
+.circleBackground {
+  fill: none !important;
+  stroke: #f2f2f2;
+}
+
+.circleProgress {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circleText {
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.percentageText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.circleContainer {
+  width: 100px;
+}
+
+.cSAI {
+  font-weight: bold;
+  font-size: 24px;
+  color: #5540bf;
+}
+
+.sma20 {
+  font-weight: bold;
+  font-size: 24px;
+  color: #11112f;
+}
+
+.minvol {
+  font-weight: bold;
+  font-size: 24px;
+  color: #f14a5c;
+}
+
+.hedger {
+  color: #5540bf;
+}
+
+.shortTermBear {
+  color: #f03b68;
+}
+
+.shortTermSwings {
+  color: #262626;
+}
+
+.shortTermBull {
+  color: #f49124;
+}
+
+.longTermBull {
+  color: #4bc0c0;
+}
+
+.lender {
+  color: #1314ad;
+}
+
+footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 130px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.beta-btn {
+  display: contents;
+}
+
+@media (min-width: 1500px) {
+  .container {
+    max-width: 1450px;
+  }
+  .tempHeroContainer {
+    margin-top: 75px;
+    margin-bottom: 150px;
+  }
+}
+
+.beforePill{
+  margin-left: 0;
+}
+
+.afterPill{
+  margin: 5px;
+}
+.badgePadding{
+  margin:3px
+}
+
+.zapFullViewHeader{
+  padding-top: 15px;
+}
+
+@media (max-width: 1200px) {
+  .illustration {
+      width:100%;
+  }
+}
