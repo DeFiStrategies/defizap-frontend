@@ -31,6 +31,16 @@ import {
   checkResponse
 } from '../../api/apiHelpers';
 
+import SimpleID from 'simpleid-js-sdk';
+
+const simple = new SimpleID({
+  appOrigin: window.location.origin,
+  appName: "DeFiZap",
+  appId: "ADD YOUR APP ID HERE",
+  useSimpledIdWidget: true,
+  network: 'mainnet'
+});
+
 class BuyButtonContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -205,7 +215,24 @@ class BuyButtonContainer extends React.Component {
   async initialize() {
     try {
       const [account] = await window.ethereum.enable();
+      console.log(account)
       this.setState({ account });
+      //Check if SimpleID has previously been called
+      const userData = simple.getUserData()
+      if(userData && userData.wallet) {
+        //Nothing to do here right now
+      } else {
+        //Need to pass user's address to SimpleID
+        if(account) {
+          const userInfo = {
+            address: account
+          }
+          const signedIn = await simple.passUserInfo(userInfo)
+          console.log(signedIn)
+        } else {
+          console.log("No ethereum address")
+        }
+      }
     } catch (error) {
       console.error(error);
       alert('You will need to connect web3 wallet');
