@@ -13,6 +13,15 @@ import ZapListContainer from './components/ZapList/ZapListContainer';
 import LandingPage from './components/LandingPage';
 // import Analytics from './pages/analytics';
 // import Dashboard from './pages/dashboard';
+import SimpleID from 'simpleid-js-sdk';
+
+const simple = new SimpleID({
+  appOrigin: window.location.origin,
+  appName: "DeFiZap",
+  appId: "ADD YOUR APP ID HERE",
+  useSimpledIdWidget: true,
+  network: 'mainnet'
+});
 
 class App extends PureComponent {
   static propTypes = {
@@ -26,7 +35,7 @@ class App extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {simple};
     autobind(this);
   }
 

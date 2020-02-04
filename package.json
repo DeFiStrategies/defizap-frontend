@@ -35,6 +35,7 @@
     "redux-devtools-dock-monitor": "^1.1.3",
     "redux-devtools-log-monitor": "^1.4.0",
     "redux-thunk": "^2.3.0",
+    "simpleid-js-sdk": "^1.0.0",
     "slick-carousel": "^1.8.1",
     "web3": "^1.2.4"
   },
