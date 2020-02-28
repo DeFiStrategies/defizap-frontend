@@ -321,7 +321,7 @@ class BuyButtonContainer extends React.Component {
                 />
               ) : null}
               {/* <div className='justify-content-center pl-4'>Slippage</div> */}
-              {/* {hasReturnsChart ?
+              {/* {hasReturnsChart ? 
               <Row className="justify-content-center pe-4 pt-2">
                 <div className='justify-content-center pl-4'>
                   Slippage{' '}
