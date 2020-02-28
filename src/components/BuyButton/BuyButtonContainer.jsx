@@ -42,8 +42,32 @@ class BuyButtonContainer extends React.Component {
       showCross: false,
       showCheck: false,
       gasMode: 'average',
-      txId: ''
+      txId: '',
+      unlockState: props.unlockConfig ? 'loading' : 'unlocked' // if no unlockConfig, zap is unlocked
     };
+    this.unlockEventListener = null;
+  }
+
+  componentDidMount() {
+    // Register the event handler for unlock!
+    const { unlockConfig } = this.props;
+    if (unlockConfig) {
+      this.unlockEventListener = window.addEventListener(
+        'unlockProtocol',
+        e => {
+          this.setState({
+            unlockState: e.detail
+          });
+        }
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    // Unregister the event handler!
+    if (this.unlockEventListener) {
+      window.removeEventListener(this.unlockEventListener);
+    }
   }
 
   async getGas() {
@@ -213,8 +237,21 @@ class BuyButtonContainer extends React.Component {
     }
   }
 
+  useThisZap = () => {
+    const { name, unlockConfig } = this.props;
+    if (unlockConfig) {
+      // Reset the config
+      window.unlockProtocol.resetConfig(unlockConfig);
+    }
+    this.setState({ open: true });
+    registerEvent({
+      category: BUY_ZAP,
+      action: name
+    });
+  }
+
   renderModal() {
-    const { open, value } = this.state;
+    const { open, value, unlockState } = this.state;
     const {
       name,
       ensAddress,
@@ -227,6 +264,16 @@ class BuyButtonContainer extends React.Component {
       stats,
       minValue
     } = this.props;
+
+    if (open && unlockState === 'loading') {
+      // We should wait... there should be a change very soon!
+      // This will avoid a flicker
+      return;
+    } else if (open && unlockState === 'locked') {
+      // This is locked, the user is asked to unlock the zap!
+      window.unlockProtocol.loadCheckoutModal();
+      return;
+    }
 
     return (
       <Modal isOpen={open} toggle={this.toggle} centered>
@@ -366,20 +413,15 @@ class BuyButtonContainer extends React.Component {
   }
 
   render() {
-    const { isOrderable, name, block, size } = this.props;
+    const { isOrderable, block, size } = this.props;
+
     return (
       <>
         {isOrderable ? (
           // eslint-disable-next-line jsx-a11y/accessible-emoji
           <Button
             className={`${styles.buyButton}`}
-            onClick={() => {
-              this.setState({ open: true });
-              registerEvent({
-                category: BUY_ZAP,
-                action: name
-              });
-            }}
+            onClick={this.useThisZap}
             disabled={!isOrderable}
             // variant="outline-primary"
             size={!isEmpty(size) ? size : 'md'}

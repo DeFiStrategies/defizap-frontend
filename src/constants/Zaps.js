@@ -1,5 +1,15 @@
 const Zaps = {
   unipoollink: {
+    unlockConfig: {
+      callToAction: {
+        default: 'This Zap is locked. Pay with cryptocurrency to unlock it!',
+      },
+      locks: {
+        '0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F': {
+          name: 'Unipool Link lock'
+        }
+      }
+    },
     id: 'unipoollink',
     name: 'LINK Unipool',
     text: 'Uni LINK',
